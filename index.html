@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Wish</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right top, #1f0537, #380c60, #55108c, #7413bb, #9612eb);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            position: relative;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .landing-page,
+        .story-slide,
+        .final-slide {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: all 0.8s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .landing-page {
+            z-index: 10;
+        }
+
+        .active {
+            opacity: 1;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: #9d50bb;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 11;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .star,
+        .flower,
+        .heart,
+        .love {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.5s ease;
+            z-index: 1;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 0;
+        }
+
+        .final-slide {
+            padding: 2rem 0;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .slider {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .slider img.active {
+            display: block;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            color: #9d50bb;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            border-radius: 50%;
+            z-index: 2;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .prev-btn {
+            left: 10px;
+        }
+
+        .next-btn {
+            right: 10px;
+        }
+
+        @media (max-width: 480px) {
+            .slider {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <audio autoplay loop>
+        <source src="/happy-birthday-314197.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <div class="container">
+        <!-- Landing Page -->
+        <div class="landing-page active" id="landing">
+            <h1>Today isn't just another day...</h1>
+            <p>It's the day my favorite person was born 💖</p>
+            <button class="btn" id="startBtn">Unwrap The Magic</button>
+        </div>
+
+        <!-- Story Slides -->
+        <div class="story-slide" id="slide1">
+            <p>Once upon a time...</p>
+        </div>
+
+        <div class="story-slide" id="slide2">
+            <p>A little star was born on a very special day...</p>
+        </div>
+
+        <div class="story-slide" id="slide3">
+            <p>Bringing smiles, laughter, and magic wherever they went...</p>
+        </div>
+
+        <div class="story-slide" id="slide4">
+            <p>Growing stronger, kinder, and even more beautiful with every year...</p>
+        </div>
+
+        <div class="story-slide" id="slide5">
+            <p>That little star... is YOU! ✨</p>
+        </div>
+
+        <!-- Final Slide with Slider -->
+        <div class="final-slide" id="finalSlide">
+            <h1>Happy Birthday!</h1>
+            <p>I hope your special day brings you lots of happiness, love, and fun!</p>
+            <div class="slider-container">
+                <div class="slider" id="imageSlider">
+                    <!-- Images will be added here -->
+                </div>
+                <button class="slider-btn prev-btn" id="prevBtn">❮</button>
+                <button class="slider-btn next-btn" id="nextBtn">❯</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Elements
+            const landing = document.getElementById('landing');
+            const startBtn = document.getElementById('startBtn');
+            const slides = [
+                document.getElementById('slide1'),
+                document.getElementById('slide2'),
+                document.getElementById('slide3'),
+                document.getElementById('slide4'),
+                document.getElementById('slide5')
+            ];
+            const finalSlide = document.getElementById('finalSlide');
+            const container = document.querySelector('.container');
+            const slider = document.getElementById('imageSlider');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            // Animation elements
+            let animations = {
+                stars: [],
+                flowers: [],
+                hearts: [],
+                loves: [],
+                confetti: []
+            };
+
+            // Images for the slider
+            const images = [
+                './images/photo_2025-04-06 23.02.17.jpeg',
+                './images/photo_2025-04-06 23.02.38.jpeg',
+                './images/photo_2025-04-06 23.28.15.jpeg',
+                './images/photo_2025-04-06 23.02.44.jpeg',
+                './images/photo_2025-04-06 23.02.39.jpeg',
+                './images/photo_2025-04-06 23.02.40.jpeg',
+                './images/photo_2025-04-06 23.02.33.jpeg',
+                './images/photo_2025-04-06 23.24.18.jpeg',
+                './images/photo_2025-04-06 23.24.29.jpeg',
+                './images/photo_2025-04-06 23.24.06.jpeg',
+                './images/photo_2025-04-06 23.24.15.jpeg',
+                './images/photo_2025-04-06 23.02.37.jpeg',
+
+                './images/photo_2025-04-06 23.28.12.jpeg',
+                './images/photo_2025-04-06 23.32.27.jpeg',
+
+            ];
+
+            let currentImageIndex = 0;
+
+            // Initialize slider
+            function initSlider() {
+                // Clear any existing content
+                slider.innerHTML = '';
+
+                // Add all images to the slider
+                images.forEach((src, index) => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = `Birthday image ${index + 1}`;
+                    if (index === 0) img.classList.add('active');
+                    slider.appendChild(img);
+                });
+            }
+
+            // Show next image
+            function showNextImage() {
+                const allImages = slider.querySelectorAll('img');
+                allImages[currentImageIndex].classList.remove('active');
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                allImages[currentImageIndex].classList.add('active');
+            }
+
+            // Show previous image
+            function showPrevImage() {
+                const allImages = slider.querySelectorAll('img');
+                allImages[currentImageIndex].classList.remove('active');
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                allImages[currentImageIndex].classList.add('active');
+            }
+
+            // Improved Clear animations function
+            function clearAnimations(specificType = null) {
+                if (specificType) {
+                    // Check if the type exists in our animations object before accessing
+                    if (animations[specificType + 's']) {
+                        animations[specificType + 's'].forEach(element => {
+                            if (element && element.parentNode) element.parentNode.removeChild(element);
+                        });
+                        animations[specificType + 's'] = [];
+                    }
+                } else {
+                    for (let type in animations) {
+                        if (animations[type]) {
+                            animations[type].forEach(element => {
+                                if (element && element.parentNode) element.parentNode.removeChild(element);
+                            });
+                            animations[type] = [];
+                        }
+                    }
+                }
+            }
+
+            // Create animated elements
+            function createAnimation(type, count) {
+                clearAnimations(type);
+
+                for (let i = 0; i < count; i++) {
+                    const element = document.createElement('div');
+                    element.className = type;
+
+                    if (type === 'star') element.textContent = '✨';
+                    if (type === 'flower') element.textContent = '🌸';
+                    if (type === 'heart') element.textContent = '💖';
+                    if (type === 'love') element.textContent = '❤️';
+
+                    element.style.fontSize = `${Math.random() * 1.5 + 1}rem`;
+                    element.style.position = 'absolute';
+                    element.style.top = `${Math.random() * 80 + 10}%`;
+                    element.style.left = `${Math.random() * 80 + 10}%`;
+                    element.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+                    container.appendChild(element);
+                    animations[type + 's'].push(element);
+
+                    setTimeout(() => {
+                        element.style.opacity = '1';
+                        element.style.transform += ` translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`;
+                    }, 100 * i);
+
+                    setTimeout(() => {
+                        element.style.opacity = '0';
+                    }, 2500);
+                }
+            }
+
+            // Create confetti rain
+            function createConfetti() {
+                clearAnimations('confetti');
+
+                const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = `${Math.random() * 10 + 5}px`;
+                    confetti.style.height = `${Math.random() * 10 + 5}px`;
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.top = '-10px';
+
+                    container.appendChild(confetti);
+                    animations.confetti.push(confetti);
+
+                    setTimeout(() => {
+                        confetti.style.opacity = '1';
+                        confetti.style.transform = `translateY(${window.innerHeight * 1.2}px) rotate(${Math.random() * 360}deg)`;
+                        confetti.style.transition = `all ${Math.random() * 2 + 3}s ease-in`;
+                    }, 100 * Math.random());
+                }
+            }
+
+            // Start journey
+            startBtn.addEventListener('click', function handler(e) {
+                this.disabled = true;
+                landing.classList.remove('active');
+
+                let currentSlide = 0;
+
+                function showNextSlide() {
+                    if (currentSlide < slides.length) {
+                        slides[currentSlide].classList.add('active');
+
+                        if (currentSlide === 0) createAnimation('star', 5);
+                        if (currentSlide === 1) createAnimation('flower', 3);
+                        if (currentSlide === 2) createAnimation('love', 4);
+                        if (currentSlide === 3) createAnimation('heart', 6);
+                        if (currentSlide === 4) createAnimation('star', 8);
+
+                        setTimeout(() => {
+                            slides[currentSlide].classList.remove('active');
+                            currentSlide++;
+                            showNextSlide();
+                        }, 3000);
+                    } else {
+                        setTimeout(() => {
+                            // Initialize the slider before showing the final slide
+                            initSlider();
+                            finalSlide.classList.add('active');
+                            createConfetti();
+                            startBtn.remove();
+                        }, 1000);
+                    }
+                }
+
+                showNextSlide();
+                this.removeEventListener('click', handler);
+            });
+
+            // Slider controls with dedicated event handlers
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                showNextImage();
+            });
+
+            prevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                showPrevImage();
+            });
+        });
+    </script>
+</body>
+
+</html>
