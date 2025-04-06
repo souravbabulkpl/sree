@@ -178,6 +178,38 @@
             right: 10px;
         }
 
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .audio-btn {
+            background: rgba(255, 255, 255, 0.8);
+            color: #9d50bb;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin: 0 5px;
+        }
+
+        .audio-btn:hover {
+            transform: scale(1.1);
+        }
+
         @media (max-width: 480px) {
             .slider {
                 height: 400px;
@@ -187,14 +219,20 @@
 </head>
 
 <body>
-    <audio autoplay loop>
+    <audio id="bgMusic" loop autoplay>
         <source src="/happy-birthday-314197.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
+
+    <div class="audio-controls">
+        <button class="audio-btn" id="playBtn">▶</button>
+        <button class="audio-btn" id="pauseBtn" style="display: none;">⏸</button>
+    </div>
+
     <div class="container">
         <!-- Landing Page -->
         <div class="landing-page active" id="landing">
-            <h1>Today isn't just another day...</h1>
+            <h1>Today isn't just another day Madam...</h1>
             <p>It's the day my favorite person was born 💖</p>
             <button class="btn" id="startBtn">Unwrap The Magic</button>
         </div>
@@ -222,7 +260,7 @@
 
         <!-- Final Slide with Slider -->
         <div class="final-slide" id="finalSlide">
-            <h1>Happy Birthday!</h1>
+            <h1>Happy Birthday Piya ❤️</h1>
             <p>I hope your special day brings you lots of happiness, love, and fun!</p>
             <div class="slider-container">
                 <div class="slider" id="imageSlider">
@@ -252,6 +290,11 @@
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
 
+            // Audio elements
+            const bgMusic = document.getElementById('bgMusic');
+            const playBtn = document.getElementById('playBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+
             // Animation elements
             let animations = {
                 stars: [],
@@ -272,16 +315,44 @@
                 './images/photo_2025-04-06 23.02.33.jpeg',
                 './images/photo_2025-04-06 23.24.18.jpeg',
                 './images/photo_2025-04-06 23.24.29.jpeg',
+                './images/photo_2025-04-06 23.02.34.jpeg',
                 './images/photo_2025-04-06 23.24.06.jpeg',
                 './images/photo_2025-04-06 23.24.15.jpeg',
                 './images/photo_2025-04-06 23.02.37.jpeg',
-
+                './images/photo_2025-04-06 23.02.31.jpeg',
+                './images/photo_2025-04-06 23.02.34.jpeg',
                 './images/photo_2025-04-06 23.28.12.jpeg',
                 './images/photo_2025-04-06 23.32.27.jpeg',
 
             ];
 
             let currentImageIndex = 0;
+
+            // Audio control functions
+            playBtn.addEventListener('click', () => {
+                bgMusic.play().then(() => {
+                    playBtn.style.display = 'none';
+                    pauseBtn.style.display = 'flex';
+                }).catch(error => {
+                    console.error("Audio play failed:", error);
+                });
+            });
+
+            pauseBtn.addEventListener('click', () => {
+                bgMusic.pause();
+                pauseBtn.style.display = 'none';
+                playBtn.style.display = 'flex';
+            });
+
+            // Try to play audio after user interaction
+            startBtn.addEventListener('click', () => {
+                bgMusic.play().then(() => {
+                    playBtn.style.display = 'none';
+                    pauseBtn.style.display = 'flex';
+                }).catch(error => {
+                    console.error("Audio play failed:", error);
+                });
+            });
 
             // Initialize slider
             function initSlider() {
